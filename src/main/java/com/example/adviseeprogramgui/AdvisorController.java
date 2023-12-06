@@ -12,6 +12,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ChangeListener;
 
 public class AdvisorController {
 
@@ -57,6 +59,8 @@ public class AdvisorController {
     @FXML
     private Button deleteButton;
 
+    @FXML
+    private TextField editTextfield;
 
     @FXML
     private ListView<Student> studentListview;
@@ -91,6 +95,20 @@ public class AdvisorController {
                 "July 7, 2022", c);
         studentList.add(s);
         studentListview.setItems(studentList);
+        studentListview.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Student>() {
+            public void changed(ObservableValue<? extends Student> observableValue, Student oldStudent, Student newStudent) {
+                ObservableList<String> attributeList = FXCollections.observableArrayList();
+                attributeList.add(newStudent.getFirstName());
+                attributeList.add(newStudent.getMiddleName());
+                attributeList.add(newStudent.getLastName());
+                attributeList.add(newStudent.getAcademicId());
+                attributeList.add(newStudent.getPhoneNum());
+                attributeList.add(newStudent.getEmail());
+                attributeList.add(newStudent.getAddress());
+                attributeList.add(newStudent.getMajor());
+                attributeList.add(newStudent.getAdmitDate());
+                attributeListview.setItems(attributeList);
+            }
+        });
     }
-
 }
