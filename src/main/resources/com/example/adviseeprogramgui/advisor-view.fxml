@@ -12,8 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="559.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.AdvisorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="559.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.adviseeprogramgui.AdvisorController">
    <children>
       <GridPane layoutX="105.0" layoutY="25.0" prefHeight="298.0" prefWidth="472.0">
         <columnConstraints>
@@ -46,30 +45,30 @@
             <TextField fx:id="addressText" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="majorText" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <TextField fx:id="admitText" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="tuitonText" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="tuitionText" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <TextField fx:id="nameText" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <HBox layoutX="42.0" layoutY="423.0" prefHeight="90.0" prefWidth="598.0">
+      <HBox layoutX="42.0" layoutY="423.0" prefHeight="138.0" prefWidth="598.0">
          <children>
-            <ListView prefHeight="200.0" prefWidth="200.0" />
-            <ListView prefHeight="200.0" prefWidth="200.0" />
-            <TextArea prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="studentListview" prefHeight="200.0" prefWidth="199.0" />
+            <ListView fx:id="attributeListview" prefHeight="200.0" prefWidth="200.0" />
+            <TextArea fx:id="attributeTextArea" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </HBox>
       <HBox layoutX="252.0" layoutY="358.0" prefHeight="26.0" prefWidth="178.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#clickAddButton" prefHeight="26.0" prefWidth="50.0" text="Add">
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#clickAddButton" prefHeight="26.0" prefWidth="50.0" text="Add">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#clickEditButton" prefHeight="26.0" prefWidth="50.0" text="Edit">
+            <Button fx:id="editButton" mnemonicParsing="false" onAction="#clickEditButton" prefHeight="26.0" prefWidth="50.0" text="Edit">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#clickDeleteButton" text="Delete" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#clickDeleteButton" text="Delete" />
          </children>
       </HBox>
    </children>

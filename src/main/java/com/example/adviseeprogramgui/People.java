@@ -5,21 +5,26 @@ public abstract class People implements Payable {
     private String middleName;
     private String lastName;
     private String academicId;
-    private Phone phoneNum;
-    private Email email;
-    private Address address;
+    private String phoneNum;
+    private String email;
+    private String address;
 
     public People() {
         this.firstName = "";
         this.middleName = "";
         this.lastName = "";
         this.academicId = "";
+        /*
         this.phoneNum = new Phone("", "", ""); // Initialize Phone with empty values
         this.email = new Email("", ""); // Initialize Email with empty values
         this.address = new Address("", "", "", ""); // Initialize Address with empty values
+         */
+        this.phoneNum = "";
+        this.email = "";
+        this.address = "";
     }
 
-    public People(String fN, String mN, String lN, String id, Phone pN, Email e, Address a) {
+    public People(String fN, String mN, String lN, String id, String pN, String e, String a) {
         this.firstName = fN;
         this.middleName = mN;
         this.lastName = lN;
@@ -37,19 +42,19 @@ public abstract class People implements Payable {
         this.academicId = academicId;
     }
 
-    public Address getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    public Email getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(Email email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -77,11 +82,11 @@ public abstract class People implements Payable {
         this.middleName = middleName;
     }
 
-    public Phone getPhoneNum() {
+    public String getPhoneNum() {
         return phoneNum;
     }
 
-    public void setPhoneNum(Phone phoneNum) {
+    public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
     }
 

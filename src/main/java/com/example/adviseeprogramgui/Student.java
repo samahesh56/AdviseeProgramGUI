@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class Student extends People {
     private String major;
-    private Date admitDate;
+    private String admitDate;
     private ArrayList<Course> courseList;
     private double tuitionPerSem;
 
-    public Student(String fN, String mN, String lN, String id, Phone pN, Email e, Address a, String major,
-                   Date admitDate, ArrayList<Course> courseList) {
+    public Student(String fN, String mN, String lN, String id, String pN, String e, String a, String major,
+                   String admitDate, ArrayList<Course> courseList) {
         super(fN, mN, lN, id, pN, e, a);
 
         this.major = major;
@@ -42,11 +42,11 @@ public class Student extends People {
         this.tuitionPerSem = tuitionPerSem;
     }
 
-    public Date getAdmitDate() {
+    public String getAdmitDate() {
         return admitDate;
     }
 
-    public void setAdmitDate(Date admitDate) {
+    public void setAdmitDate(String admitDate) {
         this.admitDate = admitDate;
     }
 
@@ -87,5 +87,9 @@ public class Student extends People {
                         "Admit Date: %s\n" +
                         "Course List: \n%s\n", getFirstName(), getMiddleName(), getLastName(), getAcademicId(), getPhoneNum(),
                 getEmail(), getAddress(), getMajor(), getTuitionPerSem(), getAdmitDate(), courseListString);
+    }
+
+    public String toString() {
+        return String.format("'%s'", getLastName());
     }
 }
