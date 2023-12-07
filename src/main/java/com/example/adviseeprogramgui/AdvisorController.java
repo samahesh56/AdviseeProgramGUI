@@ -85,8 +85,56 @@ public class AdvisorController {
     private ObservableList<Student> studentList = FXCollections.observableArrayList();
 
     @FXML
+    void clickDeleteButton(ActionEvent event) {
+
+    }
+
+    @FXML
+    void clickEditButton(ActionEvent event) {
+        Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
+        if (selectedStudent != null) {
+            // Get the values from the corresponding text fields
+            String newName = nameText.getText();
+            String newId = idText.getText();
+            String newPhone = phoneText.getText();
+            String newEmail = emailText.getText();
+            String newAddress = addressText.getText();
+            String newMajor = majorText.getText();
+            String newAdmitDate = admitText.getText();
+
+            // Update the selected student's attributes
+            if (!newName.isEmpty()) {
+                selectedStudent.setName(newName);
+            }
+            if (!newId.isEmpty()) {
+                selectedStudent.setAcademicId(newId);
+            }
+            if (!newPhone.isEmpty()) {
+                selectedStudent.setPhoneNum(newPhone);
+            }
+            if (!newEmail.isEmpty()) {
+                selectedStudent.setEmail(newEmail);
+            }
+            if (!newAddress.isEmpty()) {
+                selectedStudent.setAddress(newAddress);
+            }
+            if (!newMajor.isEmpty()) {
+                selectedStudent.setMajor(newMajor);
+            }
+            if (!newAdmitDate.isEmpty()) {
+                selectedStudent.setAdmitDate(newAdmitDate);
+            }
+
+            // Update the attribute list view
+            updateAttributeListView(selectedStudent);
+        }
+    }
+
+    @FXML
     void clickAddButton(ActionEvent event) {
         if (addStudent.isSelected()) {
+
+
             // Perform logic to add/delete/edit a student using nameTextField and idTextField
             Student newStudent = new Student("NewName", "NewID", "NewPhone", "NewEmail", "NewAddress", "NewMajor", "NewAdmitDate", new ArrayList<>());
 
@@ -99,16 +147,6 @@ public class AdvisorController {
 
             selectedStudent.getCourseList().add(selectedCourse);
         }
-    }
-
-    @FXML
-    void clickDeleteButton(ActionEvent event) {
-
-    }
-
-    @FXML
-    void clickEditButton(ActionEvent event) {
-
     }
 
     @FXML
@@ -171,4 +209,25 @@ public class AdvisorController {
             courseTxt.appendText(course.toString() + "\n\n");
         }
     }
+
+    private void updateAttributeListView(Student student) {
+        ObservableList<String> attributeList = FXCollections.observableArrayList();
+        attributeList.add("Name: " + student.getName());
+        attributeList.add("ID: " + student.getAcademicId());
+        attributeList.add("Phone Number: " + student.getPhoneNum());
+        attributeList.add("Email: " + student.getEmail());
+        attributeList.add("Address: " + student.getAddress());
+        attributeList.add("Major: " + student.getMajor());
+        attributeList.add("Admit Date: " + student.getAdmitDate());
+        attributeList.add("Courses");
+
+        attributeListview.setItems(attributeList);
+
+        attributeListview.setOnMouseClicked(event -> {
+            if (attributeListview.getSelectionModel().getSelectedIndex() == attributeList.indexOf("Courses")) {
+                showCoursesDialog(student.getCourseList());
+            }
+        });
+    }
+
 }

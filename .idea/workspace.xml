@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd27d3da-212a-45b7-8341-2d9b80d7f117" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/adviseeprogramgui/AdvisorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/adviseeprogramgui/AdvisorController.java" afterDir="false" />
     </list>
@@ -39,7 +40,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "Branch3",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/samah/Downloads/AdviseeProgramGUI"
+    "last_opened_file_path": "C:/Users/samah/Downloads/Contacts"
   }
 }]]></component>
   <component name="RecentsManager">
