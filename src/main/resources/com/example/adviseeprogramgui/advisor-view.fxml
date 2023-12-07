@@ -59,7 +59,7 @@
             <TextArea fx:id="courseTxt" prefHeight="134.0" prefWidth="155.0" />
          </children>
       </HBox>
-      <HBox layoutX="172.0" layoutY="360.0" prefHeight="26.0" prefWidth="337.0">
+      <HBox layoutX="172.0" layoutY="360.0" prefHeight="26.0" prefWidth="189.0">
          <children>
             <Button fx:id="addButton" mnemonicParsing="false" onAction="#clickAddButton" prefHeight="26.0" prefWidth="50.0" text="Add">
                <HBox.margin>
@@ -75,7 +75,6 @@
                   <Insets />
                </HBox.margin>
             </Button>
-            <TextField fx:id="editTextfield" prefWidth="162.0" />
          </children>
       </HBox>
       <RadioButton fx:id="addStudent" layoutX="61.0" layoutY="342.0" mnemonicParsing="false" text="Student">
