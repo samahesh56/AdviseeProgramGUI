@@ -134,7 +134,6 @@ public class AdvisorController {
     void clickAddButton(ActionEvent event) {
         if (addStudent.isSelected()) {
 
-
             // Perform logic to add/delete/edit a student using nameTextField and idTextField
             Student newStudent = new Student("NewName", "NewID", "NewPhone", "NewEmail", "NewAddress", "NewMajor", "NewAdmitDate", new ArrayList<>());
 
@@ -145,16 +144,31 @@ public class AdvisorController {
 
             Course selectedCourse = courseListView.getSelectionModel().getSelectedItem();
 
-            selectedStudent.getCourseList().add(selectedCourse);
+            if (selectedStudent != null && selectedCourse != null) {
+                // Check if the course is not already in the student's course list
+                if (!selectedStudent.getCourseList().contains(selectedCourse)) {
+                    // Add the selected course to the student's course list
+                    selectedStudent.getCourseList().add(selectedCourse);
+
+                    // Update the attribute list view to refresh the "Courses" section
+                    updateAttributeListView(selectedStudent);
+                }
+            }
         }
     }
 
     @FXML
     void initialize() {
 
-        //ArrayList<Course> courseList = new ArrayList<>();
-        //courseList.add(new Course("CMPSC221", 3.0, 100.0));
-        //getCourseList().add(new Course("CMPSC221", 3.0, 100.0));
+        // Create a static list of courses
+        ObservableList<Course> courseList = FXCollections.observableArrayList();
+        courseList.add(new Course("CMPSC221", 3.0, 100.0));
+        courseList.add(new Course("MATH101", 4.0, 95.0));
+        // Add more courses as needed
+
+        // Set the course list to the courseListView
+        courseListView.setItems(courseList);
+
 
         Student s = new Student("Brian Tran", "bzt5255", "111-111-1111",
                 "bzt5255@psu.edu", "69 Fourtwenty Ave Media, PA 69420", "Computer Science",
@@ -222,12 +236,6 @@ public class AdvisorController {
         attributeList.add("Courses");
 
         attributeListview.setItems(attributeList);
-
-        attributeListview.setOnMouseClicked(event -> {
-            if (attributeListview.getSelectionModel().getSelectedIndex() == attributeList.indexOf("Courses")) {
-                showCoursesDialog(student.getCourseList());
-            }
-        });
     }
 
 }
