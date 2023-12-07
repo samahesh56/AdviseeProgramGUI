@@ -138,7 +138,7 @@ public class AdvisorController {
                 String address = newStudent.getAddress();
                 String major = newStudent.getMajor();
                 String admitDate = newStudent.getAdmitDate();
-                List<Course> courses = newStudent.getCourseList();
+                ArrayList<Course> courses = newStudent.getCourseList();
 
                 attributeList.add("Name: " + name);
                 attributeList.add("ID: " + ID);
@@ -151,37 +151,24 @@ public class AdvisorController {
 
                 attributeListview.setItems(attributeList);
 
-                courseTxt.clear();
-
-                // Display course information in the TextArea
-                attributeListview.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-                    @Override
-                    public void changed(ObservableValue<? extends String> observable, String oldValue, String selectedAttribute) {
-                        if ("Courses".equals(selectedAttribute)) {
-                            StringBuilder courseInfo = new StringBuilder();
-
-                            // Get the selected student
-                            Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
-
-                            // Check if a student is selected
-                            if (selectedStudent != null) {
-                                // Get the courses of the selected student
-                                List<Course> courses = selectedStudent.getCourseList();
-
-                                // Display course information in the TextArea
-                                for (Course course : courses) {
-                                    courseInfo.append(course.toString()).append("\n\n");
-                                }
-                            }
-
-                            courseTxt.setText(courseInfo.toString());
-                        } else {
-                            // Clear the courseTxt if another attribute is selected
-                            courseTxt.clear();
-                        }
+                attributeListview.setOnMouseClicked(event -> {
+                    if (attributeListview.getSelectionModel().getSelectedIndex() == attributeList.indexOf("Courses")) {
+                        showCoursesDialog(newStudent.getCourseList());
                     }
                 });
             }
         });
+    }
+
+    private void showCoursesDialog(List<Course> courses) {
+        // Implement your logic to display detailed information about the courses here
+        // You can create a new window, a dialog, or update the existing attributeListview
+        // with the detailed information.
+
+        courseTxt.clear();
+
+        for (Course course : courses) {
+            courseTxt.appendText(course.toString() + "\n\n");
+        }
     }
 }
