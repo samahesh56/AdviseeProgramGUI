@@ -42,8 +42,11 @@ public class Course {
     }
 
     // course info
-    public String displayCourseInfo() {
-        return String.format("Course Number: %s | Number of Credits: %.1f | Price per Credit: $%.2f", courseNum, numCredits, pricePerCredit);
+    @Override
+    public String toString() {
+        return "Course: " + courseNum +
+                "\nCredits: " + numCredits +
+                "\nPrice: " + pricePerCredit;
     }
 
 

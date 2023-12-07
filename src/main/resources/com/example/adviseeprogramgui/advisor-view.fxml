@@ -4,15 +4,17 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="559.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.adviseeprogramgui.AdvisorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.adviseeprogramgui.AdvisorController">
    <children>
       <GridPane layoutX="105.0" layoutY="25.0" prefHeight="298.0" prefWidth="472.0">
         <columnConstraints>
@@ -51,9 +53,10 @@
       </GridPane>
       <HBox layoutX="42.0" layoutY="423.0" prefHeight="134.0" prefWidth="598.0">
          <children>
-            <ListView fx:id="studentListview" prefHeight="200.0" prefWidth="199.0" />
-            <ListView fx:id="attributeListview" prefHeight="200.0" prefWidth="200.0" />
-            <TextArea fx:id="attributeTextArea" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="studentListview" prefHeight="134.0" prefWidth="126.0" />
+            <ListView fx:id="attributeListview" prefHeight="134.0" prefWidth="153.0" />
+            <ListView fx:id="courseListView" prefHeight="134.0" prefWidth="156.0" />
+            <TextArea fx:id="courseTxt" prefHeight="134.0" prefWidth="155.0" />
          </children>
       </HBox>
       <HBox layoutX="172.0" layoutY="360.0" prefHeight="26.0" prefWidth="337.0">
@@ -75,5 +78,11 @@
             <TextField fx:id="editTextfield" prefWidth="162.0" />
          </children>
       </HBox>
+      <RadioButton fx:id="addStudent" layoutX="61.0" layoutY="342.0" mnemonicParsing="false" text="Student">
+         <toggleGroup>
+            <ToggleGroup fx:id="operationToggleGroup" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="addCourse" layoutX="61.0" layoutY="377.0" mnemonicParsing="false" text="Course" toggleGroup="$operationToggleGroup" />
    </children>
 </AnchorPane>

@@ -1,21 +1,34 @@
 package com.example.adviseeprogramgui;
 
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.RadioButton;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.*;
-
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.control.TextArea;
 
 public class AdvisorController {
+
+    @FXML
+    private ToggleGroup operationToggleGroup;
+
+    @FXML
+    private RadioButton addStudent;
+
+    @FXML
+    private RadioButton addCourse;
+
+    @FXML
+    private TextArea courseTxt;
 
     @FXML
     private ResourceBundle resources;
@@ -33,7 +46,7 @@ public class AdvisorController {
     private ListView<String> attributeListview;
 
     @FXML
-    private TextArea attributeTextArea;
+    private ListView<Course> courseListView;
 
     @FXML
     private TextField emailText;
@@ -68,11 +81,24 @@ public class AdvisorController {
     @FXML
     private TextField tuitionText;
 
+    @FXML
     private ObservableList<Student> studentList = FXCollections.observableArrayList();
 
     @FXML
     void clickAddButton(ActionEvent event) {
+        if (addStudent.isSelected()) {
+            // Perform logic to add/delete/edit a student using nameTextField and idTextField
+            Student newStudent = new Student("NewName", "NewID", "NewPhone", "NewEmail", "NewAddress", "NewMajor", "NewAdmitDate", new ArrayList<>());
 
+            studentListview.getItems().add(newStudent);
+            // Add/delete/edit the student
+        } else if (addCourse.isSelected()) {
+            Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
+
+            Course selectedCourse = courseListView.getSelectionModel().getSelectedItem();
+
+            selectedStudent.getCourseList().add(selectedCourse);
+        }
     }
 
     @FXML
@@ -87,27 +113,74 @@ public class AdvisorController {
 
     @FXML
     void initialize() {
-        ArrayList<Course> c = new ArrayList<>();
-        c.add(new Course("CMPSC221", 3.0, 100.0));
-        c.add(new Course("MATH230", 4.0, 75.0));
-        Student s = new Student("Brian", "", "Tran", "bzt5255", "111-111-1111",
+
+        //ArrayList<Course> courseList = new ArrayList<>();
+        //courseList.add(new Course("CMPSC221", 3.0, 100.0));
+        //getCourseList().add(new Course("CMPSC221", 3.0, 100.0));
+
+        Student s = new Student("Brian Tran", "bzt5255", "111-111-1111",
                 "bzt5255@psu.edu", "69 Fourtwenty Ave Media, PA 69420", "Computer Science",
-                "July 7, 2022", c);
+                "July 7, 2022", new ArrayList<Course>());
+
+        s.getCourseList().add(new Course("CMPSC221", 3.0, 100.0));
+        s.getCourseList().add(new Course("CMPSC221", 3.0, 100.0));
+
         studentList.add(s);
+
         studentListview.setItems(studentList);
         studentListview.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Student>() {
             public void changed(ObservableValue<? extends Student> observableValue, Student oldStudent, Student newStudent) {
                 ObservableList<String> attributeList = FXCollections.observableArrayList();
-                attributeList.add(newStudent.getFirstName());
-                attributeList.add(newStudent.getMiddleName());
-                attributeList.add(newStudent.getLastName());
-                attributeList.add(newStudent.getAcademicId());
-                attributeList.add(newStudent.getPhoneNum());
-                attributeList.add(newStudent.getEmail());
-                attributeList.add(newStudent.getAddress());
-                attributeList.add(newStudent.getMajor());
-                attributeList.add(newStudent.getAdmitDate());
+                String name = newStudent.getName();
+                String ID = newStudent.getAcademicId();
+                String phoneNum = newStudent.getPhoneNum();
+                String email = newStudent.getEmail();
+                String address = newStudent.getAddress();
+                String major = newStudent.getMajor();
+                String admitDate = newStudent.getAdmitDate();
+                List<Course> courses = newStudent.getCourseList();
+
+                attributeList.add("Name: " + name);
+                attributeList.add("ID: " + ID);
+                attributeList.add("Phone Number: " + phoneNum);
+                attributeList.add("Email: " + email);
+                attributeList.add("Address: " + address);
+                attributeList.add("Major: " + major);
+                attributeList.add("Admit Date: " + admitDate);
+                attributeList.add("Courses");
+
                 attributeListview.setItems(attributeList);
+
+                courseTxt.clear();
+
+                // Display course information in the TextArea
+                attributeListview.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue, String selectedAttribute) {
+                        if ("Courses".equals(selectedAttribute)) {
+                            StringBuilder courseInfo = new StringBuilder();
+
+                            // Get the selected student
+                            Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
+
+                            // Check if a student is selected
+                            if (selectedStudent != null) {
+                                // Get the courses of the selected student
+                                List<Course> courses = selectedStudent.getCourseList();
+
+                                // Display course information in the TextArea
+                                for (Course course : courses) {
+                                    courseInfo.append(course.toString()).append("\n\n");
+                                }
+                            }
+
+                            courseTxt.setText(courseInfo.toString());
+                        } else {
+                            // Clear the courseTxt if another attribute is selected
+                            courseTxt.clear();
+                        }
+                    }
+                });
             }
         });
     }

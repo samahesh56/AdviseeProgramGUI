@@ -8,9 +8,9 @@ public class Student extends People {
     private ArrayList<Course> courseList;
     private double tuitionPerSem;
 
-    public Student(String fN, String mN, String lN, String id, String pN, String e, String a, String major,
+    public Student(String name, String id, String pN, String e, String a, String major,
                    String admitDate, ArrayList<Course> courseList) {
-        super(fN, mN, lN, id, pN, e, a);
+        super(name, id, pN, e, a);
 
         this.major = major;
         this.admitDate = admitDate;
@@ -73,11 +73,11 @@ public class Student extends People {
     public String display() {
         String courseListString = "";
         for (Course course : getCourseList()) {
-            courseListString += course.displayCourseInfo() + "\n";
+            courseListString += course.toString() + "\n";
         }
 
         return String.format("Student:\n" +
-                        "Name: %s %s %s\n" +
+                        "Name: %s \n" +
                         "id: %s\n" +
                         "Phone: %s\n" +
                         "Email: %s\n" +
@@ -85,11 +85,11 @@ public class Student extends People {
                         "Major: %s\n" +
                         "TuitionPerSem: $%.2f\n" +
                         "Admit Date: %s\n" +
-                        "Course List: \n%s\n", getFirstName(), getMiddleName(), getLastName(), getAcademicId(), getPhoneNum(),
+                        "Course List: \n%s\n", getName(), getAcademicId(), getPhoneNum(),
                 getEmail(), getAddress(), getMajor(), getTuitionPerSem(), getAdmitDate(), courseListString);
     }
 
     public String toString() {
-        return String.format("'%s'", getLastName());
+        return String.format("'%s'", getName());
     }
 }

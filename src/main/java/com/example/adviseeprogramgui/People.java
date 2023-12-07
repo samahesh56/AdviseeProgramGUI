@@ -1,18 +1,14 @@
 package com.example.adviseeprogramgui;
 
 public abstract class People implements Payable {
-    private String firstName;
-    private String middleName;
-    private String lastName;
+    private String name;
     private String academicId;
     private String phoneNum;
     private String email;
     private String address;
 
     public People() {
-        this.firstName = "";
-        this.middleName = "";
-        this.lastName = "";
+        this.name = "";
         this.academicId = "";
         /*
         this.phoneNum = new Phone("", "", ""); // Initialize Phone with empty values
@@ -24,10 +20,8 @@ public abstract class People implements Payable {
         this.address = "";
     }
 
-    public People(String fN, String mN, String lN, String id, String pN, String e, String a) {
-        this.firstName = fN;
-        this.middleName = mN;
-        this.lastName = lN;
+    public People(String name, String id, String pN, String e, String a) {
+        this.name = name;
         this.academicId = id;
         this.phoneNum = pN;
         this.email = e;
@@ -58,28 +52,12 @@ public abstract class People implements Payable {
         this.email = email;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhoneNum() {
