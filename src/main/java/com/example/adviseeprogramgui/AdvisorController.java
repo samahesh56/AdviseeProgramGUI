@@ -277,7 +277,6 @@ public class AdvisorController {
                 studentCoursesList.addAll(newStudent.getCourseList());
 
                 studentCoursesListview.setItems(studentCoursesList);
-                System.out.println("HELLO!");
             }
         });
         MultipleSelectionModel<Course> studentModel = studentCoursesListview.getSelectionModel();
