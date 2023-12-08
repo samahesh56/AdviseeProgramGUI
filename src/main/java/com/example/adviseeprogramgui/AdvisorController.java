@@ -1,21 +1,16 @@
 package com.example.adviseeprogramgui;
 
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.SelectionMode;
 
 public class AdvisorController {
 
@@ -119,10 +114,11 @@ public class AdvisorController {
             if (!newAdmitDate.isEmpty()) {
                 selectedStudent.setAdmitDate(newAdmitDate);
             }
+            selectedStudent.setCourseList(new ArrayList<>(selected));
             selectedStudent.Payment();
 
-            // Update the attribute list view
-            updateAttributeListView(selectedStudent);
+
+            //updateAttributeListView(selectedStudent);
 
             studentList.add(selectedStudent);
             studentListview.setItems(studentList);
@@ -165,6 +161,7 @@ public class AdvisorController {
         if (!newAdmitDate.isEmpty()) {
             newStudent.setAdmitDate(newAdmitDate);
         }
+        newStudent.setCourseList(new ArrayList<>(selected));
         newStudent.Payment();
 
         // Update the attribute list view
@@ -172,6 +169,8 @@ public class AdvisorController {
         studentListview.setItems(studentList);
         updateAttributeListView(newStudent);
     }
+
+    ObservableList<Course> selected = FXCollections.observableArrayList();
 
     @FXML
     void initialize() {
@@ -216,9 +215,11 @@ public class AdvisorController {
         studentList.add(s3);
 
 
-
         studentListview.setItems(studentList);
         studentListview.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Student>() {
+
+            ObservableList<Course> newCourseList = FXCollections.observableArrayList();
+
             public void changed(ObservableValue<? extends Student> observableValue, Student oldStudent, Student newStudent) {
                 ObservableList<String> attributeList = FXCollections.observableArrayList();
                 String name = newStudent.getName();
@@ -240,10 +241,11 @@ public class AdvisorController {
                 admitText.setText(admitDate);
 
                 studenttxt.setText(newStudent.display());
+
                 studentCoursesListview.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
                 ObservableList<Course> studentCoursesList = FXCollections.observableArrayList();
-                for (int i = 0; i < newStudent.getCourseList().size(); i++) {
+                for (int i =0; i < newStudent.getCourseList().size(); i++) {
                     studentCoursesList.add(newStudent.getCourseList().get(i));
                 }
                 studentCoursesListview.setItems(studentCoursesList);
@@ -258,9 +260,17 @@ public class AdvisorController {
                 attributeList.add("Courses");
                 attributeList.add(String.format("Tuition: $%.2f", tuition));
 
-
             }
         });
+        MultipleSelectionModel<Course> model = courseListView.getSelectionModel();
+        model.setSelectionMode(SelectionMode.MULTIPLE);
+        courseListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
+            @Override
+            public void changed(ObservableValue<? extends Course> observableValue, Course course, Course t1) {
+                selected = model.getSelectedItems();
+            }
+        });
+
     }
 
     private void updateAttributeListView(Student student) {
@@ -276,5 +286,4 @@ public class AdvisorController {
         attributeList.add(String.format("Tuition: $%.2f", student.getTuitionPerSem()));
 
     }
-
 }
