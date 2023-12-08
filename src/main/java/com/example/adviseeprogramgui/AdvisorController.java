@@ -88,9 +88,24 @@ public class AdvisorController {
     void clickDeleteButton(ActionEvent event) {
         if (addStudent.isSelected()) {
             Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
-
+            studentList.remove(selectedStudent);
         }
 
+        if (addCourse.isSelected()) {
+            Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
+
+            Course selectedCourse = courseListView.getSelectionModel().getSelectedItem();
+
+            ArrayList<Course> courseList = selectedStudent.getCourseList();
+
+            if (attributeListview.getSelectionModel().getSelectedIndex() == courseList.indexOf(selectedCourse)) {
+                courseList.remove(selectedCourse);
+                showCoursesDialog(selectedStudent.getCourseList());
+            }
+
+            System.out.println(courseList);
+
+        }
 
     }
 
@@ -108,6 +123,7 @@ public class AdvisorController {
             String newAdmitDate = admitText.getText();
 
             studentList.remove(selectedStudent);
+
             // Update the selected student's attributes
             if (!newName.isEmpty()) {
                 selectedStudent.setName(newName);
@@ -152,6 +168,7 @@ public class AdvisorController {
             Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
 
             Course selectedCourse = courseListView.getSelectionModel().getSelectedItem();
+
 
             if (selectedStudent != null && selectedCourse != null) {
                 // Check if the course is not already in the student's course list
