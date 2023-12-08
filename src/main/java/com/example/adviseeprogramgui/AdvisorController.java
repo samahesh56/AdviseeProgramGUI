@@ -23,12 +23,6 @@ public class AdvisorController {
     private ToggleGroup operationToggleGroup;
 
     @FXML
-    private RadioButton addStudent;
-
-    @FXML
-    private RadioButton addCourse;
-
-    @FXML
     private ResourceBundle resources;
 
     @FXML
@@ -36,6 +30,9 @@ public class AdvisorController {
 
     @FXML
     private TextField addressText;
+
+    @FXML
+    private ListView<Course> studentCoursesListview;
 
     @FXML
     private TextField admitText;
@@ -81,22 +78,8 @@ public class AdvisorController {
 
     @FXML
     void clickDeleteButton(ActionEvent event) {
-        if (addStudent.isSelected()) {
-            Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
-            studentList.remove(selectedStudent);
-        }
-
-        if (addCourse.isSelected()) {
-            Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
-
-            Course selectedCourse = courseListView.getSelectionModel().getSelectedItem();
-
-            ArrayList<Course> courseList = selectedStudent.getCourseList();
-
-            System.out.println(courseList);
-
-        }
-
+        Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
+        studentList.remove(selectedStudent);
     }
 
     @FXML
@@ -148,67 +131,46 @@ public class AdvisorController {
 
     @FXML
     void clickAddButton(ActionEvent event) {
-        if (addStudent.isSelected()) {
+        // Perform logic to add/delete/edit a student using nameTextField and idTextField
+        Student newStudent = new Student("","","","","","","",new ArrayList<Course>());
+        String newName = nameText.getText();
+        String newId = idText.getText();
+        String newPhone = phoneText.getText();
+        String newEmail = emailText.getText();
+        String newAddress = addressText.getText();
+        String newMajor = majorText.getText();
+        String newAdmitDate = admitText.getText();
 
-            // Perform logic to add/delete/edit a student using nameTextField and idTextField
-            Student newStudent = new Student("","","","","","","",new ArrayList<Course>());
-            String newName = nameText.getText();
-            String newId = idText.getText();
-            String newPhone = phoneText.getText();
-            String newEmail = emailText.getText();
-            String newAddress = addressText.getText();
-            String newMajor = majorText.getText();
-            String newAdmitDate = admitText.getText();
+        studentList.remove(newStudent);
 
-            studentList.remove(newStudent);
-
-            // Update the selected student's attributes
-            if (!newName.isEmpty()) {
-                newStudent.setName(newName);
-            }
-            if (!newId.isEmpty()) {
-                newStudent.setAcademicId(newId);
-            }
-            if (!newPhone.isEmpty()) {
-                newStudent.setPhoneNum(newPhone);
-            }
-            if (!newEmail.isEmpty()) {
-                newStudent.setEmail(newEmail);
-            }
-            if (!newAddress.isEmpty()) {
-                newStudent.setAddress(newAddress);
-            }
-            if (!newMajor.isEmpty()) {
-                newStudent.setMajor(newMajor);
-            }
-            if (!newAdmitDate.isEmpty()) {
-                newStudent.setAdmitDate(newAdmitDate);
-            }
-            newStudent.Payment();
-
-            // Update the attribute list view
-            studentList.add(newStudent);
-            studentListview.setItems(studentList);
-            updateAttributeListView(newStudent);
-
-        } else if (addCourse.isSelected()) {
-            Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
-
-            Course selectedCourse = courseListView.getSelectionModel().getSelectedItem();
-
-
-            if (selectedStudent != null && selectedCourse != null) {
-                // Check if the course is not already in the student's course list
-                if (!selectedStudent.getCourseList().contains(selectedCourse)) {
-                    // Add the selected course to the student's course list
-                    selectedStudent.getCourseList().add(selectedCourse);
-                    selectedStudent.Payment();
-
-                    // Update the attribute list view to refresh the "Courses" section
-                    updateAttributeListView(selectedStudent);
-                }
-            }
+        // Update the selected student's attributes
+        if (!newName.isEmpty()) {
+            newStudent.setName(newName);
         }
+        if (!newId.isEmpty()) {
+            newStudent.setAcademicId(newId);
+        }
+        if (!newPhone.isEmpty()) {
+            newStudent.setPhoneNum(newPhone);
+        }
+        if (!newEmail.isEmpty()) {
+            newStudent.setEmail(newEmail);
+        }
+        if (!newAddress.isEmpty()) {
+            newStudent.setAddress(newAddress);
+        }
+        if (!newMajor.isEmpty()) {
+            newStudent.setMajor(newMajor);
+        }
+        if (!newAdmitDate.isEmpty()) {
+            newStudent.setAdmitDate(newAdmitDate);
+        }
+        newStudent.Payment();
+
+        // Update the attribute list view
+        studentList.add(newStudent);
+        studentListview.setItems(studentList);
+        updateAttributeListView(newStudent);
     }
 
     @FXML
@@ -278,6 +240,13 @@ public class AdvisorController {
                 admitText.setText(admitDate);
 
                 studenttxt.setText(newStudent.display());
+                studentCoursesListview.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+                ObservableList<Course> studentCoursesList = FXCollections.observableArrayList();
+                for (int i = 0; i < newStudent.getCourseList().size(); i++) {
+                    studentCoursesList.add(newStudent.getCourseList().get(i));
+                }
+                studentCoursesListview.setItems(studentCoursesList);
 
                 attributeList.add("Name: " + name);
                 attributeList.add("ID: " + ID);
