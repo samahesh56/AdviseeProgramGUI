@@ -60,13 +60,10 @@ public class AdvisorController {
     private Button addButton;
 
     @FXML
-    private Button editButton;
+    private Button updateButton;
 
     @FXML
     private Button deleteButton;
-
-    @FXML
-    private TextField editTextfield;
 
     @FXML
     private ListView<Student> studentListview;
@@ -81,7 +78,7 @@ public class AdvisorController {
     }
 
     @FXML
-    void clickEditButton(ActionEvent event) {
+    void clickUpdateButton(ActionEvent event) {
         Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
         if (selectedStudent != null) {
             // Get the values from the corresponding text fields
@@ -92,8 +89,6 @@ public class AdvisorController {
             String newAddress = addressText.getText();
             String newMajor = majorText.getText();
             String newAdmitDate = admitText.getText();
-
-            studentList.remove(selectedStudent);
 
             // Update the selected student's attributes
             if (!newName.isEmpty()) {
@@ -117,13 +112,42 @@ public class AdvisorController {
             if (!newAdmitDate.isEmpty()) {
                 selectedStudent.setAdmitDate(newAdmitDate);
             }
+            // remove courses from studentCourseList
+            //System.out.println(studentSelected.size());
+            ArrayList<Course> removedCourses = new ArrayList<>(studentSelected);
 
-            selectedStudent.setCourseList(new ArrayList<>(selected));
+            for (int i = 0; i < removedCourses.size(); i++) {
+                for (int j = 0; j < selectedStudent.getCourseList().size(); j++) {
+                    if (removedCourses.get(i).getCourseNumber().equals
+                            (selectedStudent.getCourseList().get(j).getCourseNumber()))
+                        selectedStudent.getCourseList().remove(j);
 
+                }
+            }
+
+            // add courses from courseList
+            ArrayList<Course> newCourseList = selectedStudent.getCourseList();
+            ArrayList<Course> temp = new ArrayList<>(selected);
+            for (int i = 0; i < temp.size(); i++) {
+                int flag = 0;
+                for (int j = 0; j < newCourseList.size(); j++) {
+                    if (temp.get(i).getCourseNumber().equals(newCourseList.get(j).getCourseNumber())) {
+                        flag = 1;
+                        break;
+                    }
+                }
+                if (flag == 0)
+                    newCourseList.add(temp.get(i));
+            }
+
+            selectedStudent.setCourseList(newCourseList);
             selectedStudent.Payment();
-
-            studentList.add(selectedStudent);
             studentListview.setItems(studentList);
+            studentCoursesList = FXCollections.observableArrayList();
+            studentCoursesList.addAll(selectedStudent.getCourseList());
+            studentCoursesListview.setItems(studentCoursesList);
+
+            studenttxt.setText(selectedStudent.display());
         }
     }
 
@@ -139,9 +163,6 @@ public class AdvisorController {
         String newMajor = majorText.getText();
         String newAdmitDate = admitText.getText();
 
-        studentList.remove(newStudent);
-
-        // Update the selected student's attributes
         if (!newName.isEmpty()) {
             newStudent.setName(newName);
         }
@@ -164,16 +185,28 @@ public class AdvisorController {
             newStudent.setAdmitDate(newAdmitDate);
         }
         newStudent.setCourseList(new ArrayList<>(selected));
-
         newStudent.Payment();
 
-        studentList.add(newStudent);
-        studentListview.setItems(studentList);
+        int flag = 0;
+        for (int i = 0; i < studentList.size(); i++) {
+            if (studentList.get(i).getAcademicId().equals(newStudent.getAcademicId()))
+                flag++;
+        }
+
+        if (flag == 0) {
+            studentList.add(newStudent);
+            studentListview.setItems(studentList);
+        }
     }
+
+    //ObservableList that stores the Student CourseList Values for the current Student
+    ObservableList<Course> studentCoursesList = FXCollections.observableArrayList();
 
     //ObservableList that stores the selected CourseList values
     ObservableList<Course> selected = FXCollections.observableArrayList();
 
+    //ObservableList that stores the selected Student CourseList Values
+    ObservableList<Course> studentSelected = FXCollections.observableArrayList();
     @FXML
     void initialize() {
 
@@ -216,8 +249,6 @@ public class AdvisorController {
         s3.Payment();
         studentList.add(s3);
 
-
-
         studentListview.setItems(studentList);
         studentListview.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Student>() {
             public void changed(ObservableValue<? extends Student> observableValue, Student oldStudent, Student newStudent) {
@@ -241,16 +272,23 @@ public class AdvisorController {
                 admitText.setText(admitDate);
 
                 studenttxt.setText(newStudent.display());
-                studentCoursesListview.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-                ObservableList<Course> studentCoursesList = FXCollections.observableArrayList();
-                for (int i = 0; i < newStudent.getCourseList().size(); i++) {
-                    studentCoursesList.add(newStudent.getCourseList().get(i));
-                }
+                studentCoursesList = FXCollections.observableArrayList();
+                studentCoursesList.addAll(newStudent.getCourseList());
+
                 studentCoursesListview.setItems(studentCoursesList);
-
+                System.out.println("HELLO!");
             }
         });
+        MultipleSelectionModel<Course> studentModel = studentCoursesListview.getSelectionModel();
+        studentModel.setSelectionMode(SelectionMode.MULTIPLE);
+        studentCoursesListview.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
+            public void changed(ObservableValue<? extends Course> observableValue, Course course, Course t1) {
+                studentSelected = studentModel.getSelectedItems();
+                /*System.out.println(studentSelected.size());*/
+            }
+        });
+
         MultipleSelectionModel<Course> model = courseListView.getSelectionModel();
         model.setSelectionMode(SelectionMode.MULTIPLE);
         courseListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
