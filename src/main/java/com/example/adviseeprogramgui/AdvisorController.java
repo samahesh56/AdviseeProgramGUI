@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.SelectionMode;
 
 public class AdvisorController {
 
@@ -26,9 +27,6 @@ public class AdvisorController {
 
     @FXML
     private RadioButton addCourse;
-
-    @FXML
-    private TextArea courseTxt;
 
     @FXML
     private ResourceBundle resources;
@@ -43,7 +41,7 @@ public class AdvisorController {
     private TextField admitText;
 
     @FXML
-    private ListView<String> attributeListview;
+    private TextArea studenttxt;
 
     @FXML
     private ListView<Course> courseListView;
@@ -94,11 +92,6 @@ public class AdvisorController {
             Course selectedCourse = courseListView.getSelectionModel().getSelectedItem();
 
             ArrayList<Course> courseList = selectedStudent.getCourseList();
-
-            if (attributeListview.getSelectionModel().getSelectedIndex() == courseList.indexOf(selectedCourse)) {
-                courseList.remove(selectedCourse);
-                showCoursesDialog(selectedStudent.getCourseList());
-            }
 
             System.out.println(courseList);
 
@@ -158,10 +151,46 @@ public class AdvisorController {
         if (addStudent.isSelected()) {
 
             // Perform logic to add/delete/edit a student using nameTextField and idTextField
-            Student newStudent = new Student("NewName", "NewID", "NewPhone", "NewEmail", "NewAddress", "NewMajor", "NewAdmitDate", new ArrayList<>());
+            Student newStudent = new Student("","","","","","","",new ArrayList<Course>());
+            String newName = nameText.getText();
+            String newId = idText.getText();
+            String newPhone = phoneText.getText();
+            String newEmail = emailText.getText();
+            String newAddress = addressText.getText();
+            String newMajor = majorText.getText();
+            String newAdmitDate = admitText.getText();
 
-            studentListview.getItems().add(newStudent);
-            // Add/delete/edit the student
+            studentList.remove(newStudent);
+
+            // Update the selected student's attributes
+            if (!newName.isEmpty()) {
+                newStudent.setName(newName);
+            }
+            if (!newId.isEmpty()) {
+                newStudent.setAcademicId(newId);
+            }
+            if (!newPhone.isEmpty()) {
+                newStudent.setPhoneNum(newPhone);
+            }
+            if (!newEmail.isEmpty()) {
+                newStudent.setEmail(newEmail);
+            }
+            if (!newAddress.isEmpty()) {
+                newStudent.setAddress(newAddress);
+            }
+            if (!newMajor.isEmpty()) {
+                newStudent.setMajor(newMajor);
+            }
+            if (!newAdmitDate.isEmpty()) {
+                newStudent.setAdmitDate(newAdmitDate);
+            }
+            newStudent.Payment();
+
+            // Update the attribute list view
+            studentList.add(newStudent);
+            studentListview.setItems(studentList);
+            updateAttributeListView(newStudent);
+
         } else if (addCourse.isSelected()) {
             Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
 
@@ -240,6 +269,16 @@ public class AdvisorController {
                 ArrayList<Course> courses = newStudent.getCourseList();
                 Double tuition = newStudent.getTuitionPerSem();
 
+                nameText.setText(name);
+                idText.setText(ID);
+                phoneText.setText(phoneNum);
+                emailText.setText(email);
+                addressText.setText(address);
+                majorText.setText(major);
+                admitText.setText(admitDate);
+
+                studenttxt.setText(newStudent.display());
+
                 attributeList.add("Name: " + name);
                 attributeList.add("ID: " + ID);
                 attributeList.add("Phone Number: " + phoneNum);
@@ -250,27 +289,9 @@ public class AdvisorController {
                 attributeList.add("Courses");
                 attributeList.add(String.format("Tuition: $%.2f", tuition));
 
-                attributeListview.setItems(attributeList);
 
-                attributeListview.setOnMouseClicked(event -> {
-                    if (attributeListview.getSelectionModel().getSelectedIndex() == attributeList.indexOf("Courses")) {
-                        showCoursesDialog(newStudent.getCourseList());
-                    }
-                });
             }
         });
-    }
-
-    private void showCoursesDialog(List<Course> courses) {
-        // Implement your logic to display detailed information about the courses here
-        // You can create a new window, a dialog, or update the existing attributeListview
-        // with the detailed information.
-
-        courseTxt.clear();
-
-        for (Course course : courses) {
-            courseTxt.appendText(course.toString() + "\n\n");
-        }
     }
 
     private void updateAttributeListView(Student student) {
@@ -285,7 +306,6 @@ public class AdvisorController {
         attributeList.add("Courses");
         attributeList.add(String.format("Tuition: $%.2f", student.getTuitionPerSem()));
 
-        attributeListview.setItems(attributeList);
     }
 
 }

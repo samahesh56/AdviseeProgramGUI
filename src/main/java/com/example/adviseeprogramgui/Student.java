@@ -76,8 +76,7 @@ public class Student extends People {
             courseListString += course.toString() + "\n";
         }
 
-        return String.format("Student:\n" +
-                        "Name: %s \n" +
+        return String.format("Name: %s \n" +
                         "id: %s\n" +
                         "Phone: %s\n" +
                         "Email: %s\n" +
@@ -85,7 +84,7 @@ public class Student extends People {
                         "Major: %s\n" +
                         "TuitionPerSem: $%.2f\n" +
                         "Admit Date: %s\n" +
-                        "Course List: \n%s\n", getName(), getAcademicId(), getPhoneNum(),
+                        "%s", getName(), getAcademicId(), getPhoneNum(),
                 getEmail(), getAddress(), getMajor(), getTuitionPerSem(), getAdmitDate(), courseListString);
     }
 
