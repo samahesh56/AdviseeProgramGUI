@@ -79,9 +79,6 @@ public class AdvisorController {
     private ListView<Student> studentListview;
 
     @FXML
-    private TextField tuitionText;
-
-    @FXML
     private ObservableList<Student> studentList = FXCollections.observableArrayList();
 
     @FXML
@@ -146,6 +143,7 @@ public class AdvisorController {
             if (!newAdmitDate.isEmpty()) {
                 selectedStudent.setAdmitDate(newAdmitDate);
             }
+            selectedStudent.Payment();
 
             // Update the attribute list view
             updateAttributeListView(selectedStudent);
@@ -175,6 +173,7 @@ public class AdvisorController {
                 if (!selectedStudent.getCourseList().contains(selectedCourse)) {
                     // Add the selected course to the student's course list
                     selectedStudent.getCourseList().add(selectedCourse);
+                    selectedStudent.Payment();
 
                     // Update the attribute list view to refresh the "Courses" section
                     updateAttributeListView(selectedStudent);
@@ -190,6 +189,10 @@ public class AdvisorController {
         ObservableList<Course> courseList = FXCollections.observableArrayList();
         courseList.add(new Course("CMPSC221", 3.0, 100.0));
         courseList.add(new Course("MATH101", 4.0, 95.0));
+        courseList.add(new Course("ENGL15", 3.0, 90.0));
+        courseList.add(new Course("MUSIC9", 3.0, 50.0));
+        courseList.add(new Course("CHEM110", 4.0, 100.0));
+        courseList.add(new Course("PHYS212", 4.0, 100.0));
         // Add more courses as needed
 
         // Set the course list to the courseListView
@@ -197,13 +200,31 @@ public class AdvisorController {
 
 
         Student s = new Student("Brian Tran", "bzt5255", "111-111-1111",
-                "bzt5255@psu.edu", "69 Fourtwenty Ave Media, PA 69420", "Computer Science",
+                "bzt5255@psu.edu", "12 Bucklemyshoe Street Exton, PA 12903", "Computer Science",
                 "July 7, 2022", new ArrayList<Course>());
 
         s.getCourseList().add(new Course("CMPSC221", 3.0, 100.0));
-        s.getCourseList().add(new Course("CMPSC221", 3.0, 100.0));
-
+        s.getCourseList().add(new Course("MATH101", 4.0, 95.0));
+        s.Payment();
         studentList.add(s);
+
+        Student s2 = new Student("Akku Mahesh", "sah3804", "222-222-2222", "sah3804@psu.edu",
+                "69 Fourtwenty Ave Media, PA 69420", "Political Science", "May 4, 2022",
+                new ArrayList<Course>());
+        s2.getCourseList().add(courseList.get(3));
+        s2.getCourseList().add(courseList.get(5));
+        s2.Payment();
+        studentList.add(s2);
+
+        Student s3 = new Student("J. Robert Oppenheimer", "jro8210", "333-333-3333", "jro8210@psu.edu",
+                "3 Los Alamos Los Alamos, NM 87544", "Quantum Physics", "May 22, 1929",
+                new ArrayList<>());
+        s3.getCourseList().add(courseList.get(4));
+        s3.getCourseList().add(courseList.get(5));
+        s3.Payment();
+        studentList.add(s3);
+
+
 
         studentListview.setItems(studentList);
         studentListview.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Student>() {
@@ -217,6 +238,7 @@ public class AdvisorController {
                 String major = newStudent.getMajor();
                 String admitDate = newStudent.getAdmitDate();
                 ArrayList<Course> courses = newStudent.getCourseList();
+                Double tuition = newStudent.getTuitionPerSem();
 
                 attributeList.add("Name: " + name);
                 attributeList.add("ID: " + ID);
@@ -226,6 +248,7 @@ public class AdvisorController {
                 attributeList.add("Major: " + major);
                 attributeList.add("Admit Date: " + admitDate);
                 attributeList.add("Courses");
+                attributeList.add(String.format("Tuition: $%.2f", tuition));
 
                 attributeListview.setItems(attributeList);
 
@@ -260,6 +283,7 @@ public class AdvisorController {
         attributeList.add("Major: " + student.getMajor());
         attributeList.add("Admit Date: " + student.getAdmitDate());
         attributeList.add("Courses");
+        attributeList.add(String.format("Tuition: $%.2f", student.getTuitionPerSem()));
 
         attributeListview.setItems(attributeList);
     }

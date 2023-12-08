@@ -46,7 +46,7 @@ public class Course {
     public String toString() {
         return "Course: " + courseNum +
                 "\nCredits: " + numCredits +
-                "\nPrice: " + pricePerCredit;
+                String.format("\nPrice: $%.2f", pricePerCredit);
     }
 
 
