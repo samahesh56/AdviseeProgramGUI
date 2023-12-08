@@ -86,6 +86,11 @@ public class AdvisorController {
 
     @FXML
     void clickDeleteButton(ActionEvent event) {
+        if (addStudent.isSelected()) {
+            Student selectedStudent = studentListview.getSelectionModel().getSelectedItem();
+
+        }
+
 
     }
 
@@ -102,6 +107,7 @@ public class AdvisorController {
             String newMajor = majorText.getText();
             String newAdmitDate = admitText.getText();
 
+            studentList.remove(selectedStudent);
             // Update the selected student's attributes
             if (!newName.isEmpty()) {
                 selectedStudent.setName(newName);
@@ -127,6 +133,9 @@ public class AdvisorController {
 
             // Update the attribute list view
             updateAttributeListView(selectedStudent);
+
+            studentList.add(selectedStudent);
+            studentListview.setItems(studentList);
         }
     }
 
