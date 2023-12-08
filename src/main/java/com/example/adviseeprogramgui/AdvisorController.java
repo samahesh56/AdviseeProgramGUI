@@ -1,21 +1,19 @@
 package com.example.adviseeprogramgui;
 
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.*;
-import javafx.collections.FXCollections;
+import java.util.stream.Collectors;
+
+import javafx.collections.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.SelectionMode;
+
 
 public class AdvisorController {
 
@@ -119,10 +117,10 @@ public class AdvisorController {
             if (!newAdmitDate.isEmpty()) {
                 selectedStudent.setAdmitDate(newAdmitDate);
             }
-            selectedStudent.Payment();
 
-            // Update the attribute list view
-            updateAttributeListView(selectedStudent);
+            selectedStudent.setCourseList(new ArrayList<>(selected));
+
+            selectedStudent.Payment();
 
             studentList.add(selectedStudent);
             studentListview.setItems(studentList);
@@ -132,7 +130,7 @@ public class AdvisorController {
     @FXML
     void clickAddButton(ActionEvent event) {
         // Perform logic to add/delete/edit a student using nameTextField and idTextField
-        Student newStudent = new Student("","","","","","","",new ArrayList<Course>());
+        Student newStudent = new Student("","","","","","","", new ArrayList<Course>());
         String newName = nameText.getText();
         String newId = idText.getText();
         String newPhone = phoneText.getText();
@@ -165,13 +163,16 @@ public class AdvisorController {
         if (!newAdmitDate.isEmpty()) {
             newStudent.setAdmitDate(newAdmitDate);
         }
+        newStudent.setCourseList(new ArrayList<>(selected));
+
         newStudent.Payment();
 
-        // Update the attribute list view
         studentList.add(newStudent);
         studentListview.setItems(studentList);
-        updateAttributeListView(newStudent);
     }
+
+    //ObservableList that stores the selected CourseList values
+    ObservableList<Course> selected = FXCollections.observableArrayList();
 
     @FXML
     void initialize() {
@@ -248,33 +249,14 @@ public class AdvisorController {
                 }
                 studentCoursesListview.setItems(studentCoursesList);
 
-                attributeList.add("Name: " + name);
-                attributeList.add("ID: " + ID);
-                attributeList.add("Phone Number: " + phoneNum);
-                attributeList.add("Email: " + email);
-                attributeList.add("Address: " + address);
-                attributeList.add("Major: " + major);
-                attributeList.add("Admit Date: " + admitDate);
-                attributeList.add("Courses");
-                attributeList.add(String.format("Tuition: $%.2f", tuition));
-
-
+            }
+        });
+        MultipleSelectionModel<Course> model = courseListView.getSelectionModel();
+        model.setSelectionMode(SelectionMode.MULTIPLE);
+        courseListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
+            public void changed(ObservableValue<? extends Course> observableValue, Course oldCourse, Course newCourse) {
+                selected = model.getSelectedItems();
             }
         });
     }
-
-    private void updateAttributeListView(Student student) {
-        ObservableList<String> attributeList = FXCollections.observableArrayList();
-        attributeList.add("Name: " + student.getName());
-        attributeList.add("ID: " + student.getAcademicId());
-        attributeList.add("Phone Number: " + student.getPhoneNum());
-        attributeList.add("Email: " + student.getEmail());
-        attributeList.add("Address: " + student.getAddress());
-        attributeList.add("Major: " + student.getMajor());
-        attributeList.add("Admit Date: " + student.getAdmitDate());
-        attributeList.add("Courses");
-        attributeList.add(String.format("Tuition: $%.2f", student.getTuitionPerSem()));
-
-    }
-
 }
